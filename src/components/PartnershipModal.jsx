@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { submitPartnership } from '../lib/googleForms';
 import { isValidEmail } from '../lib/validators';
+import { useBreakpoint } from '../hooks/useBreakpoint';
+
 
 const TYPES = [
   'Community Project',
@@ -18,6 +20,7 @@ export default function PartnershipModal({ onClose, onSubmitted, source = 'partn
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [touched, setTouched] = useState({ name: false, email: false });
+  const { isMobile } = useBreakpoint();
 
   const toggle = (type) => setChecked((c) => ({ ...c, [type]: !c[type] }));
   const onChange = (key, value) => {
@@ -91,7 +94,7 @@ export default function PartnershipModal({ onClose, onSubmitted, source = 'partn
       >
         <button onClick={onClose} style={{ position: 'absolute', top: 14, right: 14, width: 32, height: 32, borderRadius: '50%', border: 'none', cursor: 'pointer', background: '#0A1628', color: '#fff', fontSize: 16, lineHeight: 1 }}>×</button>
 
-        <div style={{ height: 120, borderRadius: 16, marginBottom: 22, background: 'radial-gradient(circle at 15% 35%, rgba(20,217,196,0.18) 0%, transparent 35%), radial-gradient(circle at 80% 60%, rgba(10,22,40,0.15) 0%, transparent 40%), #e6ebff', border: '1px solid rgba(10,22,40,0.08)' }} />
+        <div style={{ height: isMobile ? 60 : 120, borderRadius: 16, marginBottom: 22, background: 'radial-gradient(circle at 15% 35%, rgba(20,217,196,0.18) 0%, transparent 35%), radial-gradient(circle at 80% 60%, rgba(10,22,40,0.15) 0%, transparent 40%), #e6ebff', border: '1px solid rgba(10,22,40,0.08)' }} />
 
         {!submitted ? (
           <form onSubmit={handleSubmit}>
