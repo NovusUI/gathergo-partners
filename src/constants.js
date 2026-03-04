@@ -1,0 +1,9 @@
+export const SPRING = 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
+export const COLOR = '#14D9C4';
+export const TORCH_RADIUS = 160;
+export const THRESHOLDS = [0, 0.1, 0.25, 0.45];
+export const TIMER_DURATION = 6000;
+export const NOTCH = 14;
+export const IMG_W = 160;
+export const OUTER_R = 260;
+export const INNER_R = 213;

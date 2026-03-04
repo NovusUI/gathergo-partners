@@ -1,0 +1,58 @@
+export const ROADMAP_MONTHS = [
+  {
+    month: 'March', num: '01',
+    title: 'March Awareness-Led Community Event',
+    desc: 'A Physical Awareness Activation Supported By GatherGo (Movement + Updates + Coordination), Such As:',
+    bullets: ['Awareness Walk', 'Community Meetup + Short Talks', 'NGO-Led Activation With Transport Coordination'],
+    target: new Date('2026-03-01'),
+  },
+  {
+    month: 'April', num: '02',
+    title: 'April Impact Drive',
+    desc: 'A Coordinated Community Giving Campaign Powered By GatherGo, Including:',
+    bullets: ['Donation Collection Events', 'Volunteer Matching Sessions', 'Impact Reporting Showcase'],
+    target: new Date('2026-04-01'),
+  },
+  {
+    month: 'May', num: '03',
+    title: 'May Youth Empowerment Summit',
+    desc: 'A Youth-Led Event Focused On Education And Leadership, Featuring:',
+    bullets: ['Skills Workshops', 'Mentorship Circles', 'Community Project Pitches'],
+    target: new Date('2026-05-01'),
+  },
+  {
+    month: 'June', num: '04',
+    title: 'June Environmental Clean-Up',
+    desc: 'A Large-Scale Environmental Initiative Mobilized Through GatherGo:',
+    bullets: ['Community Clean-Up Drives', 'Tree Planting Campaign', 'Environmental Awareness Sessions'],
+    target: new Date('2026-06-01'),
+  },
+  {
+    month: 'July', num: '05',
+    title: 'July Health & Wellness Festival',
+    desc: 'A Community Health Fair Bringing Together Service Providers And Participants:',
+    bullets: ['Free Medical Check-Ups', 'Mental Health Talks', 'Fitness & Nutrition Workshops'],
+    target: new Date('2026-07-01'),
+  },
+  {
+    month: 'Aug', num: '06',
+    title: 'August Cultural Showcase',
+    desc: 'A Celebration Of Diversity And Heritage Through Community Arts:',
+    bullets: ['Cultural Performances', 'Art Exhibitions', 'Food & Heritage Markets'],
+    target: new Date('2026-08-01'),
+  },
+  {
+    month: 'Sept', num: '07',
+    title: 'September Fundraiser Gala',
+    desc: 'An Annual Fundraising Event Supporting GatherGo Partner Projects:',
+    bullets: ['Charity Auction', 'Impact Stories Panel', 'Community Recognition Awards'],
+    target: new Date('2026-09-01'),
+  },
+  {
+    month: 'Oct', num: '08',
+    title: 'October Community Fair',
+    desc: 'A Year-End Community Gathering To Celebrate Collective Impact:',
+    bullets: ['Project Demos & Showcases', 'Volunteer Appreciation', '2027 Planning Sessions'],
+    target: new Date('2026-10-01'),
+  },
+];
