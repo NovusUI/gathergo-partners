@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { COLOR, SPRING, THRESHOLDS, TORCH_RADIUS } from './constants';
 import { SDGS } from './data/sdgs';
 import { stages } from './data/stages';
@@ -50,6 +50,7 @@ export default function App() {
   const [donorEmail, setDonorEmail] = useState('');
   const [successOpen, setSuccessOpen] = useState(false);
   const { isMobile, isMedium, isSmall, width } = useBreakpoint();
+  const heroHeightVh = isMobile ? 220 : isMedium ? 300 : 420;
 
   const scrollRef = useRef(null);
   const stickyRef = useRef(null);
@@ -78,14 +79,17 @@ export default function App() {
     if (top !== undefined) el.scrollTo({ top, behavior: 'smooth' });
   };
 
-  const ICONS = useRef(Array.from({ length: 34 }, (_, i) => ({
-    ...SDGS[i % 17],
-    id: i,
-    x: Math.random() * 90 + 5,
-    y: Math.random() * 90 + 5,
-    size: Math.random() * 28 + 44,
-    rotate: Math.random() * 20 - 10,
-  }))).current;
+  const ICONS = useMemo(() => {
+    const count = isMobile ? 18 : 34;
+    return Array.from({ length: count }, (_, i) => ({
+      ...SDGS[i % 17],
+      id: i,
+      x: Math.random() * 90 + 5,
+      y: Math.random() * 90 + 5,
+      size: Math.random() * 28 + 44,
+      rotate: Math.random() * 20 - 10,
+    }));
+  }, [isMobile]);
 
   const initAudio = () => {
     if (!audioCtx.current) {
@@ -114,20 +118,22 @@ export default function App() {
   };
 
   const startDonateFlow = (email = '') => {
-    if (email) {
-      setDonorEmail(email);
-      try {
-        localStorage.setItem(DONOR_EMAIL_KEY, email);
-      } catch (err) {
-        // ignore storage errors
-      }
-    }
+    if (email) setDonorEmail(email);
     setSuccessOpen(true);
   };
 
   const openDonateDirect = () => {
     setDonateOpen(true);
   };
+
+  useEffect(() => {
+    try {
+      const savedEmail = localStorage.getItem(DONOR_EMAIL_KEY);
+      if (savedEmail) setDonorEmail(savedEmail);
+    } catch (err) {
+      // ignore storage errors
+    }
+  }, []);
 
   useEffect(() => {
     if (!successOpen) return undefined;
@@ -137,15 +143,6 @@ export default function App() {
     }, 900);
     return () => clearTimeout(id);
   }, [successOpen]);
-
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(DONOR_EMAIL_KEY) || '';
-      if (saved) setDonorEmail(saved);
-    } catch (err) {
-      // ignore storage errors
-    }
-  }, []);
 
   useEffect(() => {
     if (step > 1) {
@@ -181,7 +178,7 @@ export default function App() {
     if (!el) return undefined;
 
     const onScroll = () => {
-      const heroScrollHeight = 6.5 * window.innerHeight - window.innerHeight;
+      const heroScrollHeight = (heroHeightVh / 100) * window.innerHeight - window.innerHeight;
       const pct = Math.min(el.scrollTop / heroScrollHeight, 1);
       let s = 0;
 
@@ -198,7 +195,7 @@ export default function App() {
 
     el.addEventListener('scroll', onScroll);
     return () => el.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [heroHeightVh]);
 
   const { rings, smiles, eyes = [] } = stages[step];
   const activeRings = step <= 1
@@ -224,10 +221,10 @@ export default function App() {
         @keyframes fadeSlide { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
 
-      <div style={{ height: '650vh', position: 'relative' }}>
+      <div style={{ height: `${heroHeightVh}vh`, position: 'relative' }}>
         <div ref={stickyRef} style={{ position: 'sticky', top: 0, height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: isMobile ? 20 : 32, overflow: 'hidden', cursor: isMobile ? 'auto' : 'none' }}>
           {!isMobile && (
-            <nav style={{ position: 'absolute', top: 20, left: '50%', transform: 'translateX(-50%)', background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(12px)', borderRadius: 50, padding: '12px 36px', display: 'flex', alignItems: 'center', gap: 36, opacity: showText ? 1 : 0, transition: 'opacity 1s ease', zIndex: 20, whiteSpace: 'nowrap' }}>
+            <nav style={{ position: 'absolute', top: 20, left: '50%', transform: 'translateX(-50%)', background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(12px)', borderRadius: 50, padding: '12px 36px', display: 'flex', alignItems: 'center', gap: 36, opacity: showText ? 1 : 0, pointerEvents: showText ? 'auto' : 'none', transition: 'opacity 1s ease', zIndex: 20, whiteSpace: 'nowrap' }}>
               {NAV_ITEMS.map((item, i) => (
                 <a key={item} onClick={() => scrollToSection(item)} style={{ color: i === 0 ? COLOR : '#fff', fontSize: 14, fontWeight: i === 0 ? 700 : 400, textDecoration: 'none', letterSpacing: 0.3, cursor: 'pointer' }}>{item}</a>
               ))}
@@ -251,10 +248,7 @@ export default function App() {
           )}
 
           <div style={{ position: 'absolute', top: isMobile ? 24 : 28, left: isMobile ? 20 : 36, opacity: showText ? 1 : 0, transition: 'opacity 1s ease', zIndex: 20 }}>
-            <svg viewBox="0 0 120 50" width={isMobile ? 64 : 90} height={isMobile ? 27 : 38}>
-              {[18, 52, 82].map((cx, i) => <circle key={i} cx={cx} cy={22} r={14} fill="none" stroke={COLOR} strokeWidth={5} strokeLinecap="round" />)}
-              {[18, 52].map((cx, i) => <path key={i} d={`M${cx - 10} 36 Q${cx} 46 ${cx + 10} 36`} stroke={COLOR} strokeWidth={5} strokeLinecap="round" fill="none" />)}
-            </svg>
+            <img src="/ggologo.png" alt="GatherGo" style={{ width: isMobile ? 64 : 90, height: 'auto', display: 'block' }} />
           </div>
 
           <div style={{ position: 'absolute', inset: 0, WebkitMaskImage: torchGradient, maskImage: torchGradient, pointerEvents: 'none' }}>
@@ -284,7 +278,7 @@ export default function App() {
             })}
           </svg>
 
-          <div style={{ display: 'flex', gap: isMobile ? 12 : 20, flexDirection: isMobile ? 'column' : 'row', alignItems: 'center', opacity: showText ? 1 : 0, transform: showText ? 'translateY(0)' : 'translateY(12px)', transition: 'opacity 1s ease 0.3s, transform 1s ease 0.3s', zIndex: 2, width: isMobile ? '80%' : 'auto' }}>
+          <div style={{ display: 'flex', gap: isMobile ? 12 : 20, flexDirection: isMobile ? 'column' : 'row', alignItems: 'center', opacity: showText ? 1 : 0, pointerEvents: showText ? 'auto' : 'none', transform: showText ? 'translateY(0)' : 'translateY(12px)', transition: 'opacity 1s ease 0.3s, transform 1s ease 0.3s', zIndex: 2, width: isMobile ? '80%' : 'auto' }}>
             <button onClick={() => openPartnerModal('hero-partnership-cta')} style={{ padding: isMobile ? '13px 0' : '14px 36px', width: isMobile ? '100%' : 'auto', background: COLOR, border: 'none', borderRadius: 50, color: '#030A31', fontWeight: 700, fontSize: isMobile ? 14 : 15, cursor: 'pointer', letterSpacing: 0.5 }}>Partnership</button>
             <button onClick={() => scrollToSection('Waitlist')} style={{ padding: isMobile ? '13px 0' : '14px 36px', width: isMobile ? '100%' : 'auto', background: 'transparent', border: `2px solid ${COLOR}`, borderRadius: 50, color: '#fff', fontWeight: 600, fontSize: isMobile ? 14 : 15, cursor: 'pointer', letterSpacing: 0.5 }}>Join App Waitlist</button>
           </div>
@@ -293,7 +287,7 @@ export default function App() {
 
           {!isMobile && <div style={{ position: 'absolute', width: 12, height: 12, borderRadius: '50%', background: COLOR, left: cursor.x, top: cursor.y, transform: 'translate(-50%,-50%)', boxShadow: `0 0 15px ${COLOR}`, pointerEvents: 'none', zIndex: 100 }} />}
 
-          <div style={{ position: 'absolute', bottom: 32, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, opacity: step === 0 ? 1 : 0, transition: 'opacity 0.5s ease', zIndex: 10 }}>
+          <div style={{ position: 'absolute', bottom: isMobile ? 'calc(env(safe-area-inset-bottom, 0px) + 88px)' : 32, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, opacity: step === 0 ? 1 : 0, transition: 'opacity 0.5s ease', zIndex: 10 }}>
             <p style={{ color: COLOR, fontSize: 11, letterSpacing: 4, textTransform: 'uppercase', margin: 0, fontWeight: 700 }}>Scroll to Smile</p>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
               {[0, 1, 2].map((i) => <div key={i} style={{ width: 2, height: 6, borderRadius: 2, background: COLOR, animation: `bounce 1.2s ease-in-out ${i * 0.2}s infinite` }} />)}
@@ -331,7 +325,12 @@ export default function App() {
       </div>
 
       <div style={{ opacity: showText ? 1 : 0, pointerEvents: showText ? 'auto' : 'none', transition: 'opacity 1.5s ease 0.8s', position: 'relative', zIndex: 50 }}>
-        <Footer isMobile={isMobile} onPartner={() => openPartnerModal('footer-partnership-link')} onWaitlistSuccess={startDonateFlow} />
+        <Footer
+          isMobile={isMobile}
+          onPartner={() => openPartnerModal('footer-partnership-link')}
+          onWaitlistSuccess={startDonateFlow}
+          onNavigate={scrollToSection}
+        />
       </div>
 
       <button

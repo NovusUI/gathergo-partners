@@ -3,7 +3,12 @@ import { COLOR } from '../constants';
 import { submitWaitlist } from '../lib/googleForms';
 import { isValidEmail } from '../lib/validators';
 
-export default function Footer({ isMobile, onPartner, onWaitlistSuccess }) {
+export default function Footer({
+  isMobile,
+  onPartner,
+  onWaitlistSuccess,
+  onNavigate,
+}) {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -58,9 +63,27 @@ export default function Footer({ isMobile, onPartner, onWaitlistSuccess }) {
     : 'none';
 
   const NAV = [
-    { heading: 'Products', links: ['Features', 'Integrations'] },
-    { heading: 'Partnerships', links: ['Our Partners', 'Become A Partner'] },
-    { heading: 'Company', links: ['About', 'Contact'] },
+    {
+      heading: 'Products',
+      links: [
+        { label: 'Features', action: () => onNavigate?.('Our Goals') },
+        { label: 'Integrations', action: () => onNavigate?.('Roadmap') },
+      ],
+    },
+    {
+      heading: 'Partnerships',
+      links: [
+        { label: 'Our Partners', action: () => onNavigate?.('Partnerships') },
+        { label: 'Become A Partner', action: () => onPartner?.() },
+      ],
+    },
+    {
+      heading: 'Company',
+      links: [
+        { label: 'About', action: () => onNavigate?.('About') },
+        { label: 'Contact', action: () => onNavigate?.('Waitlist') },
+      ],
+    },
   ];
 
   return (
@@ -69,10 +92,7 @@ export default function Footer({ isMobile, onPartner, onWaitlistSuccess }) {
 
       <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? 48 : 0, justifyContent: 'space-between', alignItems: 'flex-start', position: 'relative', zIndex: 1, maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ maxWidth: 400 }}>
-          <svg viewBox="0 0 200 80" width={140} height={56} style={{ marginBottom: 24 }}>
-            {[30, 100, 170].map((cx, i) => <circle key={i} cx={cx} cy={32} r={22} fill="none" stroke={COLOR} strokeWidth={8} />)}
-            {[30, 100].map((cx, i) => <path key={i} d={`M${cx - 14} 52 Q${cx} 66 ${cx + 14} 52`} stroke={COLOR} strokeWidth={8} strokeLinecap="round" fill="none" />)}
-          </svg>
+          <img src="/ggologo.png" alt="GatherGo" style={{ width: 140, height: 'auto', marginBottom: 24, display: 'block' }} />
 
           <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 14, lineHeight: 1.8, margin: '0 0 32px' }}>Join Our Waitlist And Be Part Of The First People To Be Notified Once Our App Is Ready.</p>
 
@@ -94,8 +114,8 @@ export default function Footer({ isMobile, onPartner, onWaitlistSuccess }) {
             <div key={col.heading}>
               <p style={{ color: '#fff', fontWeight: 700, fontSize: 16, margin: '0 0 20px' }}>{col.heading}</p>
               {col.links.map((link) => (
-                <p key={link} style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14, margin: '0 0 14px', cursor: 'pointer', transition: 'color 0.2s' }} onMouseEnter={(e) => { e.target.style.color = COLOR; }} onMouseLeave={(e) => { e.target.style.color = 'rgba(255,255,255,0.5)'; }} onClick={() => { if (link === 'Become A Partner' && onPartner) onPartner(); }}>
-                  {link}
+                <p key={link.label} style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14, margin: '0 0 14px', cursor: 'pointer', transition: 'color 0.2s' }} onMouseEnter={(e) => { e.target.style.color = COLOR; }} onMouseLeave={(e) => { e.target.style.color = 'rgba(255,255,255,0.5)'; }} onClick={link.action}>
+                  {link.label}
                 </p>
               ))}
             </div>
