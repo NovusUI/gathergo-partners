@@ -174,6 +174,13 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    Object.values(SDG_MODAL_ASSETS).forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
+  useEffect(() => {
     const el = scrollRef.current;
     if (!el) return undefined;
 
