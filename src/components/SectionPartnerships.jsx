@@ -6,19 +6,25 @@ const PARTNERSHIPS = [
     name: 'NovusUI Feed500',
     location: 'Lagos',
     desc: 'A Vision To Feed 500 Families In Underserved Communities Through Coordinated Outreach Events And Donation Drives.',
-    img: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&q=80',
+    format: 'Relief Activation',
+    focus: ['Food support', 'Volunteer mobilization', 'Donor coordination'],
+    support: ['Field updates', 'Donor transparency', 'Attendance and logistics'],
   },
   {
     name: 'Jesus Market',
     location: 'Lagos',
-    desc: 'A Faith-Driven Community Market Connecting Local Vendors, Volunteers, And Families Through Purposeful Gatherings And Shared Giving.',
-    img: 'https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=800&q=80',
+    desc: 'A Faith-Based Outreach Program Where Donated Items Are Curated In A Market-Style Setup, Allowing People In The Community To Walk In And Pick What They Need With Dignity.',
+    format: 'Faith-Based Outreach',
+    focus: ['Donated essentials', 'Dignified access', 'Community care'],
+    support: ['Donation coordination', 'Volunteer roles', 'Distribution flow'],
   },
   {
     name: 'Jesus Market X Feed500',
     location: 'Lagos',
-    desc: 'A Collaborative Initiative Between Jesus Market and NovusUI Feed500 To Scale Community Feeding Programs Across Multiple Locations.',
-    img: 'https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=800&q=80',
+    desc: 'A Collaborative Initiative Exploring How Jesus Market And Feed500 Can Combine Dignified Item Distribution With Coordinated Feeding Support For More Families.',
+    format: 'Collaborative Rollout',
+    focus: ['Multi-partner outreach', 'Item distribution', 'Community feeding'],
+    support: ['Cross-team coordination', 'Donation tracking', 'Impact storytelling'],
   },
 ];
 
@@ -26,7 +32,10 @@ export default function SectionPartnerships({ isMobile, onPartner }) {
   const [current, setCurrent] = useState(0);
   const [visible, setVisible] = useState(false);
   const [fading, setFading] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const [hoverPoint, setHoverPoint] = useState({ x: 50, y: 50, active: false });
   const ref = useRef(null);
+  const cardRef = useRef(null);
   const intervalRef = useRef(null);
 
   useEffect(() => {
@@ -41,6 +50,7 @@ export default function SectionPartnerships({ isMobile, onPartner }) {
   const startAuto = () => {
     clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
+      if (paused) return;
       setFading(true);
       setTimeout(() => {
         setCurrent((i) => (i + 1) % PARTNERSHIPS.length);
@@ -52,7 +62,7 @@ export default function SectionPartnerships({ isMobile, onPartner }) {
   useEffect(() => {
     startAuto();
     return () => clearInterval(intervalRef.current);
-  }, []);
+  }, [paused]);
 
   const goTo = (i) => {
     if (i === current) return;
@@ -66,6 +76,17 @@ export default function SectionPartnerships({ isMobile, onPartner }) {
 
   const goSlide = (dir) => goTo((current + dir + PARTNERSHIPS.length) % PARTNERSHIPS.length);
   const partner = PARTNERSHIPS[current];
+
+  const handleCardMove = (e) => {
+    if (isMobile || !cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setHoverPoint({ x, y, active: true });
+  };
+
+  const ringOffsetX = isMobile ? 0 : (hoverPoint.x - 50) * 0.12;
+  const ringOffsetY = isMobile ? 0 : (hoverPoint.y - 50) * 0.12;
 
   return (
     <section ref={ref} style={{ background: '#030A31', padding: isMobile ? '60px 20px' : '72px 64px', cursor: 'auto' }}>
@@ -95,15 +116,79 @@ export default function SectionPartnerships({ isMobile, onPartner }) {
           </div>
         </div>
 
-        <div style={{ flex: 1, position: 'relative', borderRadius: 24, overflow: 'hidden', height: isMobile ? 340 : 540, opacity: visible ? 1 : 0, transform: visible ? 'translateX(0)' : 'translateX(28px)', transition: 'opacity 0.8s ease 0.15s, transform 0.8s ease 0.15s', boxShadow: '0 20px 60px rgba(0,0,0,0.4)' }}>
-          <img src={partner.img} alt={partner.name} style={{ width: '100%', height: isMobile ? 340 : 540, objectFit: 'cover', display: 'block', opacity: fading ? 0 : 1, transition: 'opacity 0.35s ease' }} />
+        <div
+          ref={cardRef}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => {
+            setPaused(false);
+            setHoverPoint({ x: 50, y: 50, active: false });
+          }}
+          onMouseMove={handleCardMove}
+          style={{ flex: 1, position: 'relative', borderRadius: 24, overflow: 'hidden', height: isMobile ? 340 : 540, opacity: visible ? 1 : 0, transform: visible ? 'translateX(0)' : 'translateX(28px)', transition: 'opacity 0.8s ease 0.15s, transform 0.8s ease 0.15s', boxShadow: '0 20px 60px rgba(0,0,0,0.4)', background: 'linear-gradient(140deg, #10214a 0%, #07122B 55%, #0b3850 100%)' }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: `radial-gradient(circle at ${hoverPoint.x}% ${hoverPoint.y}%, rgba(20,217,196,${hoverPoint.active ? 0.18 : 0}) 0%, transparent 24%), radial-gradient(circle at 20% 25%, rgba(20,217,196,0.16) 0%, transparent 30%), radial-gradient(circle at 75% 30%, rgba(255,255,255,0.08) 0%, transparent 32%), radial-gradient(circle at 68% 72%, rgba(20,217,196,0.1) 0%, transparent 28%)`,
+              transition: 'background 0.18s ease-out',
+            }}
+          />
+          <div style={{ position: 'absolute', top: isMobile ? -10 : -20 + ringOffsetY * 0.4, right: isMobile ? -10 : -20 - ringOffsetX * 0.4, width: isMobile ? 150 : 220, height: isMobile ? 150 : 220, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.12)', transition: 'top 0.18s ease-out, right 0.18s ease-out' }} />
+          <div style={{ position: 'absolute', top: isMobile ? 20 : 38 + ringOffsetY * 0.7, right: isMobile ? 20 : 42 - ringOffsetX * 0.7, width: isMobile ? 110 : 156, height: isMobile ? 110 : 156, borderRadius: '50%', border: '1px solid rgba(20,217,196,0.18)', transition: 'top 0.18s ease-out, right 0.18s ease-out' }} />
+          <div style={{ position: 'absolute', top: isMobile ? 48 : 82 + ringOffsetY, right: isMobile ? 48 : 70 - ringOffsetX, width: isMobile ? 54 : 76, height: isMobile ? 54 : 76, borderRadius: '50%', border: '3px solid rgba(20,217,196,0.9)', transition: 'top 0.18s ease-out, right 0.18s ease-out' }} />
 
           <div style={{ position: 'absolute', top: 16, left: 16, background: 'rgba(255,255,255,0.88)', backdropFilter: 'blur(8px)', borderRadius: 50, padding: '7px 16px', display: 'flex', alignItems: 'center', gap: 6 }}>
             <span style={{ fontSize: 13 }}>📍</span>
             <span style={{ color: '#0A1628', fontWeight: 600, fontSize: 13 }}>{partner.location}</span>
           </div>
 
-          <div style={{ position: 'absolute', top: 16, right: 16, background: 'rgba(255,255,255,0.88)', backdropFilter: 'blur(8px)', borderRadius: 50, width: 34, height: 34, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, color: '#0A1628', fontWeight: 700, cursor: 'pointer' }}>↗</div>
+          <div style={{ position: 'absolute', top: 16, right: 16, background: 'rgba(255,255,255,0.88)', backdropFilter: 'blur(8px)', borderRadius: 50, padding: '7px 14px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, color: '#0A1628', fontWeight: 700 }}>
+            {partner.format}
+          </div>
+
+          <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%', padding: isMobile ? '76px 20px 90px' : '94px 28px 102px' }}>
+            <div style={{ maxWidth: isMobile ? '100%' : 420, opacity: fading ? 0 : 1, transform: fading ? 'translateY(6px)' : 'translateY(0)', transition: 'opacity 0.35s ease, transform 0.35s ease' }}>
+              <p style={{ margin: '0 0 10px', color: COLOR, fontWeight: 700, fontSize: 13, letterSpacing: 0.4 }}>
+                Partnership Snapshot
+              </p>
+              <h3 style={{ margin: '0 0 14px', color: '#fff', fontSize: isMobile ? 24 : 34, fontWeight: 800, lineHeight: 1.12 }}>
+                {partner.name}
+              </h3>
+              <p style={{ margin: 0, color: 'rgba(255,255,255,0.72)', fontSize: 14, lineHeight: 1.8 }}>
+                {partner.desc}
+              </p>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, minmax(0, 1fr))', gap: 14, opacity: fading ? 0 : 1, transform: fading ? 'translateY(6px)' : 'translateY(0)', transition: 'opacity 0.35s ease, transform 0.35s ease' }}>
+              <div style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 18, padding: '16px 16px 14px', backdropFilter: 'blur(10px)' }}>
+                <p style={{ margin: '0 0 10px', color: '#fff', fontSize: 13, fontWeight: 700 }}>
+                  What This Needs
+                </p>
+                <div style={{ display: 'grid', gap: 8 }}>
+                  {partner.support.map((item) => (
+                    <div key={item} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                      <div style={{ width: 6, height: 6, borderRadius: '50%', background: COLOR, marginTop: 6, flexShrink: 0 }} />
+                      <p style={{ margin: 0, color: 'rgba(255,255,255,0.74)', fontSize: 12, lineHeight: 1.6 }}>{item}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 18, padding: '16px 16px 14px', backdropFilter: 'blur(10px)' }}>
+                <p style={{ margin: '0 0 10px', color: '#fff', fontSize: 13, fontWeight: 700 }}>
+                  Focus Areas
+                </p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                  {partner.focus.map((item) => (
+                    <div key={item} style={{ borderRadius: 999, background: 'rgba(20,217,196,0.14)', border: '1px solid rgba(20,217,196,0.2)', padding: '8px 10px', color: '#dbfffb', fontSize: 12, fontWeight: 600 }}>
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(to top, rgba(3,10,49,0.88) 0%, transparent 100%)', padding: '40px 20px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <button onClick={() => goSlide(-1)} style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: 'none', borderRadius: 50, padding: '10px 18px', color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>← Last Project</button>

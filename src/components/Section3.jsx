@@ -97,7 +97,7 @@ export default function Section3({ isSmall }) {
           </div>
 
           <div style={{ flexShrink: 0, width: 350, height: 525, borderRadius: '40% / 34%', overflow: 'hidden', alignSelf: isSmall ? 'center' : 'auto', opacity: visible ? 1 : 0, transform: visible ? 'translateX(0)' : 'translateX(30px)', transition: 'opacity 0.9s ease 0.2s, transform 0.9s ease 0.2s', boxShadow: '0 20px 60px rgba(0,0,0,0.12)' }}>
-            <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=700&q=80" alt="Impact" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1719277836510-8a46520a2a2e?w=700&q=80" alt="Impact" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
         </div>
       </div>

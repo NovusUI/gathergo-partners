@@ -2,7 +2,7 @@ export const PROJECTS = [
   {
     title: 'Community Impact Projects',
     desc: 'Initiatives That Improve Lives, Feeding Programs, Outreach Events, Education Drives, And Social Support Efforts.',
-    img: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80',
+    img: '/pictures/volunteer-aid-workers-handing-out-donations.webp',
   },
   {
     title: 'Environmental Projects',
@@ -12,12 +12,12 @@ export const PROJECTS = [
   {
     title: 'Health & Wellness Events',
     desc: 'Medical Outreaches, Mental Health Awareness, Fitness Campaigns, And Community Wellbeing Workshops.',
-    img: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80',
+    img: '/pictures/close-up-team-hand-shake.webp',
   },
   {
     title: 'Education Initiatives',
     desc: 'Scholarships, Tutoring Programs, Skill Development Workshops, And Literacy Drives For All Ages.',
-    img: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&q=80',
+    img: '/pictures/abidjan-ivory-coast-december-1-2015-8-year-old-ivoirien-schoolkids-drawing-white-paper.webp',
   },
   {
     title: 'Cultural & Arts Events',

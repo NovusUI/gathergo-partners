@@ -64,7 +64,7 @@ export default function Section5({ isMobile, isMedium, scrollEl }) {
           <div style={{ display: 'flex', flexDirection: isMedium ? 'column' : 'row', gap: 28, alignItems: 'flex-start' }}>
             <div style={{ flex: isMedium ? 'unset' : '0 0 auto', width: isMedium ? '100%' : 300, display: 'flex', flexDirection: isMedium ? 'row' : 'column', gap: 20, opacity: visible ? 1 : 0, transform: visible ? 'translateX(0)' : 'translateX(-24px)', transition: 'opacity 0.8s ease 0.1s, transform 0.8s ease 0.1s', marginBottom: isMedium ? 28 : 0 }}>
               <div style={{ flex: isMedium ? 1 : 'unset', height: isMedium ? 220 : 260, borderRadius: 20, overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.1)' }}>
-                <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&q=80" alt="Community" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img loading="lazy" decoding="async" src="/pictures/african-american-girl-hands-holding-marble-made-heart.webp" alt="Community" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               <div style={{ flex: isMedium ? 1 : 'unset', background: '#E0FAF6', borderRadius: 18, padding: '24px 26px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                 <p style={{ color: '#0A1628', fontWeight: 700, fontSize: 18, margin: '0 0 12px' }}>Built for Impact</p>
@@ -74,7 +74,7 @@ export default function Section5({ isMobile, isMedium, scrollEl }) {
 
             <div style={{ display: 'flex', flexDirection: 'row', gap: 28, flex: 1, alignItems: 'flex-start' }}>
               <div style={{ flex: '0 0 auto', width: isMedium ? 240 : 280, height: isMedium ? 420 : 500, borderRadius: 20, overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.12)', opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(24px)', transition: 'opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s', alignSelf: 'flex-start' }}>
-                <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&q=80" alt="Impact" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img loading="lazy" decoding="async" src="/pictures/portrait-african-cheerful-young-girl-kenya.webp" alt="Impact" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
 
               <div style={{ flex: 1, display: 'flex', gap: 24, alignItems: 'flex-start', opacity: visible ? 1 : 0, transform: visible ? 'translateX(0)' : 'translateX(24px)', transition: 'opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s', paddingTop: 16 }}>
@@ -99,7 +99,7 @@ export default function Section5({ isMobile, isMedium, scrollEl }) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
             <div style={{ opacity: visible ? 1 : 0, transform: visible ? 'translateX(0)' : 'translateX(-24px)', transition: 'opacity 0.8s ease 0.1s, transform 0.8s ease 0.1s', display: 'flex', flexDirection: 'column', gap: 20 }}>
               <div style={{ height: 240, borderRadius: 20, overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.1)' }}>
-                <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&q=80" alt="Community" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img loading="lazy" decoding="async" src="/pictures/african-american-girl-hands-holding-marble-made-heart.webp" alt="Community" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               <div style={{ background: '#E0FAF6', borderRadius: 18, padding: '24px 26px' }}>
                 <p style={{ color: '#0A1628', fontWeight: 700, fontSize: 18, margin: '0 0 12px' }}>Built for Impact</p>
@@ -107,7 +107,7 @@ export default function Section5({ isMobile, isMedium, scrollEl }) {
               </div>
             </div>
             <div style={{ height: 300, borderRadius: 20, overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.12)', opacity: visible ? 1 : 0, transition: 'opacity 0.8s ease 0.2s' }}>
-              <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&q=80" alt="Impact" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img loading="lazy" decoding="async" src="/pictures/portrait-african-cheerful-young-girl-kenya.webp" alt="Impact" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
             <div style={{ opacity: visible ? 1 : 0, transition: 'opacity 0.8s ease 0.3s', display: 'flex', gap: 20, alignItems: 'flex-start' }}>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, paddingTop: 4 }}>

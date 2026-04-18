@@ -16,7 +16,7 @@ export default function MarqueeCard({ card }) {
         <div style={{ position: 'absolute', left: IMG_W, top: NOTCH, bottom: NOTCH, width: 0, borderLeft: '2px dashed rgba(10,22,40,0.25)', zIndex: 3 }} />
         <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: IMG_W, padding: 10, boxSizing: 'border-box', borderRadius: '18px 0 0 18px' }}>
           <div style={{ width: '100%', height: '100%', borderRadius: 10, overflow: 'hidden' }}>
-            <img src={card.img} alt={card.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            <img loading="lazy" decoding="async" src={card.img} alt={card.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
           </div>
         </div>
         <div style={{ position: 'absolute', left: IMG_W + 1, right: 0, top: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px' }}>

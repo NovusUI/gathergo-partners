@@ -13,6 +13,7 @@ import Section5 from './components/Section5';
 import Section6 from './components/Section6';
 import Section7 from './components/Section7';
 import PartnershipModal from './components/PartnershipModal';
+import ImpactProjectsModal from './components/ImpactProjectsModal';
 import DonateModal from './components/DonateModal';
 import SubmissionSuccessModal from './components/SubmissionSuccessModal';
 
@@ -46,6 +47,7 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [partnerOpen, setPartnerOpen] = useState(false);
   const [partnerSource, setPartnerSource] = useState('unknown');
+  const [impactProjectsOpen, setImpactProjectsOpen] = useState(false);
   const [donateOpen, setDonateOpen] = useState(false);
   const [donorEmail, setDonorEmail] = useState('');
   const [successOpen, setSuccessOpen] = useState(false);
@@ -316,7 +318,7 @@ export default function App() {
       </div>
 
       <div style={{ opacity: showText ? 1 : 0, pointerEvents: showText ? 'auto' : 'none', transition: 'opacity 1.5s ease 0.45s', position: 'relative', zIndex: 50 }}>
-        <Section4 isMobile={isMobile} onPartner={() => openPartnerModal('section5-project-card')} />
+        <Section4 isMobile={isMobile} onOpenList={() => setImpactProjectsOpen(true)} />
       </div> 
 
       <div ref={sec5Ref} style={{ opacity: showText ? 1 : 0, pointerEvents: showText ? 'auto' : 'none', transition: 'opacity 1.5s ease 0.5s', position: 'relative', zIndex: 50 }}>
@@ -376,6 +378,15 @@ export default function App() {
         />
       )}
 
+      {impactProjectsOpen && (
+        <ImpactProjectsModal
+          onClose={() => setImpactProjectsOpen(false)}
+          onPartner={() => {
+            setImpactProjectsOpen(false);
+            openPartnerModal('impact-projects-modal');
+          }}
+        />
+      )}
       {successOpen && <SubmissionSuccessModal />}
       {donateOpen && (
         <DonateModal

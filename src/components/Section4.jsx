@@ -5,7 +5,7 @@ import { PROJECTS } from '../data/projects';
 const TRACK_R = (INNER_R + OUTER_R) / 2;
 const N = PROJECTS.length;
 
-export default function Section4({ isMobile, onPartner }) {
+export default function Section4({ isMobile, onOpenList }) {
   const [active, setActive] = useState(0);
   const [fading, setFading] = useState(false);
   const [rotation, setRotation] = useState(0);
@@ -103,27 +103,27 @@ export default function Section4({ isMobile, onPartner }) {
               <div style={{ textAlign: 'right', maxWidth: 280 }}>
                 <p style={{ color: '#0A1628', fontWeight: 700, fontSize: 20, margin: '0 0 16px' }}>{proj.title}</p>
                 <p style={{ color: '#666', fontSize: 14, lineHeight: 1.8, margin: '0 0 16px' }}>{proj.desc}</p>
-                <button onClick={onPartner} style={{ background: '#0A1628', color: '#fff', border: 'none', borderRadius: 50, padding: '11px 24px', fontWeight: 700, fontSize: 13, cursor: 'pointer', letterSpacing: 0.3, fontFamily: 'inherit' }}>
-                  Become A Partner →
+                <button onClick={onOpenList} style={{ background: '#0A1628', color: '#fff', border: 'none', borderRadius: 50, padding: '11px 24px', fontWeight: 700, fontSize: 13, cursor: 'pointer', letterSpacing: 0.3, fontFamily: 'inherit' }}>
+                  See Extensive List →
                 </button>
               </div>
               <div style={{ width: 1, height: 140, background: '#ccc', flexShrink: 0, marginTop: 4 }} />
             </div>
 
             <div style={{ width: 380, height: 280, borderRadius: 20, overflow: 'hidden', opacity: fading ? 0 : 1, transform: fading ? 'scale(0.97)' : 'scale(1)', transition: 'opacity 0.45s ease, transform 0.45s ease', boxShadow: '0 12px 40px rgba(0,0,0,0.12)' }}>
-              <img src={proj.img} alt={proj.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+              <img loading="lazy" decoding="async" src={proj.img} alt={proj.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
             </div>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
             <div style={{ width: '100%', height: 240, borderRadius: 20, overflow: 'hidden', opacity: fading ? 0 : 1, transform: fading ? 'scale(0.97)' : 'scale(1)', transition: 'opacity 0.45s ease, transform 0.45s ease', boxShadow: '0 12px 40px rgba(0,0,0,0.12)' }}>
-              <img src={proj.img} alt={proj.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+              <img loading="lazy" decoding="async" src={proj.img} alt={proj.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
             </div>
             <div style={{ opacity: fading ? 0 : 1, transform: fading ? 'translateY(8px)' : 'translateY(0)', transition: 'opacity 0.45s ease, transform 0.45s ease' }}>
               <p style={{ color: '#0A1628', fontWeight: 700, fontSize: 18, margin: '0 0 12px' }}>{proj.title}</p>
               <p style={{ color: '#666', fontSize: 14, lineHeight: 1.8, margin: '0 0 14px' }}>{proj.desc}</p>
-              <button onClick={onPartner} style={{ background: '#0A1628', color: '#fff', border: 'none', borderRadius: 50, padding: '11px 24px', fontWeight: 700, fontSize: 13, cursor: 'pointer', letterSpacing: 0.3, fontFamily: 'inherit' }}>
-                Become A Partner →
+              <button onClick={onOpenList} style={{ background: '#0A1628', color: '#fff', border: 'none', borderRadius: 50, padding: '11px 24px', fontWeight: 700, fontSize: 13, cursor: 'pointer', letterSpacing: 0.3, fontFamily: 'inherit' }}>
+                See Extensive List →
               </button>
             </div>
           </div>
