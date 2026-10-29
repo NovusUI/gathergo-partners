@@ -10,6 +10,7 @@ import Section3 from './components/Section3';
 import SectionPartnerships from './components/SectionPartnerships';
 import Section4 from './components/Section4';
 import Section5 from './components/Section5';
+import SectionGogo from './components/SectionGogo';
 import Section6 from './components/Section6';
 import Section7 from './components/Section7';
 import PartnershipModal from './components/PartnershipModal';
@@ -323,6 +324,10 @@ export default function App() {
 
       <div ref={sec5Ref} style={{ opacity: showText ? 1 : 0, pointerEvents: showText ? 'auto' : 'none', transition: 'opacity 1.5s ease 0.5s', position: 'relative', zIndex: 50 }}>
         <Section5 isMobile={isMobile} isMedium={isMedium} scrollEl={scrollRef.current} />
+      </div>
+
+      <div style={{ opacity: showText ? 1 : 0, pointerEvents: showText ? 'auto' : 'none', transition: 'opacity 1.5s ease 0.55s', position: 'relative', zIndex: 50 }}>
+        <SectionGogo isMobile={isMobile} onExplore={() => scrollToSection('Waitlist')} />
       </div>
 
       <div ref={sec6Ref} style={{ opacity: showText ? 1 : 0, pointerEvents: showText ? 'auto' : 'none', transition: 'opacity 1.5s ease 0.6s', position: 'relative', zIndex: 50 }}>
