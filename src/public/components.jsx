@@ -10,21 +10,39 @@ export function ResourceState({ resource, children }) {
   return children(resource.data);
 }
 
-export function AppActions({ path, config, title = 'Keep going in GatherGo', children }) {
+export function AppActionLinks({ path, config }) {
   const platform = /Android/i.test(navigator.userAgent) ? 'android' : /iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'ios' : 'desktop';
   const showPlayStore = platform !== 'ios' && config?.playStoreUrl;
   const showAppStore = platform !== 'android' && config?.appStoreUrl;
-  return <aside className="web-app-card"><div><p className="web-eyebrow">Together, wherever you go</p><h2>{title}</h2>{children}</div>
-    <div className="web-app-buttons"><a className="web-button" href={`gathergoapp://${path.replace(/^\//, '')}`}>Open GatherGo</a>
+  return <div className="web-app-buttons"><a className="web-button" href={`gathergoapp://${path.replace(/^\//, '')}`}>Open GatherGo</a>
       {config && <>{showPlayStore && <a className="web-button secondary" href={config.playStoreUrl}>Get it on Google Play</a>}{showAppStore && <a className="web-button secondary" href={config.appStoreUrl}>Download on the App Store</a>}
         {!showPlayStore && !showAppStore && <p className="web-store-note">Store downloads are coming soon.</p>}<a className="web-text-link" href={config.testingUrl} target="_blank" rel="noopener noreferrer">Join app testing ↗</a></>}
-    </div></aside>;
+    </div>;
 }
 
-export function Sheet({ title, onClose, children }) {
+export function AppActions({ path, config, title = 'Keep going in GatherGo', children }) {
+  return <aside className="web-app-card"><div><p className="web-eyebrow">Together, wherever you go</p><h2>{title}</h2>{children}</div><AppActionLinks path={path} config={config} /></aside>;
+}
+
+export function ActionBar({ children, note }) {
+  return <nav className="web-action-bar" aria-label="Take part">{note && <p className="web-action-note">{note}</p>}<div className="web-action-buttons">{children}</div></nav>;
+}
+
+export function Sheet({ title, onClose, children, className = '' }) {
   const ref = useRef(null);
-  useEffect(() => { const dialog = ref.current; dialog.showModal(); return () => dialog.close(); }, []);
-  return <dialog className="web-sheet" ref={ref} aria-labelledby="web-sheet-title" onCancel={onClose} onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}>
+  useEffect(() => {
+    const dialog = ref.current;
+    const previousOverflow = document.body.style.overflow;
+    const previousFocus = document.activeElement;
+    document.body.style.overflow = 'hidden';
+    dialog.showModal();
+    return () => {
+      dialog.close();
+      document.body.style.overflow = previousOverflow;
+      if (previousFocus instanceof HTMLElement) previousFocus.focus();
+    };
+  }, []);
+  return <dialog className={`web-sheet ${className}`} ref={ref} aria-labelledby="web-sheet-title" onCancel={onClose} onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}>
     <div className="web-sheet-content"><header><h2 id="web-sheet-title">{title}</h2><button type="button" className="web-close" aria-label="Close" onClick={onClose}>×</button></header>{children}</div>
   </dialog>;
 }
