@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useResource } from './useResource';
-import { AppActions, ResourceState } from './components';
+import { ActionBar, AppActions, ResourceState, Sheet } from './components';
 import { WebSessionProvider } from './WebSession';
 import EventPage from './EventPage';
 import ReceiptPage from './ReceiptPage';
@@ -24,13 +24,14 @@ function SharedLink({ code }) {
 
 function CarpoolPage({ id, config }) {
   const resource = useResource(`/public/carpools/${encodeURIComponent(id)}`);
-  return <ResourceState resource={resource}>{(ride) => <div className="web-carpool"><p className="web-eyebrow">Go together</p><h1>A shared ride.<br />A shared purpose.</h1><div className="web-route-card"><p><span>From</span>{ride.origin}</p><div aria-hidden="true">↓</div><p><span>To</span>{ride.destination ?? 'See destination in GatherGo'}</p><p><span>Departure</span>{ride.departureTime}</p><p>{ride.availableSeats} seats available</p>{ride.event && <a href={`/event/${ride.event.id}`}>{ride.event.title} →</a>}</div><AppActions path={`/carpool/${ride.id}`} config={config} title="Join this carpool in GatherGo"><p>Ride requests, driver details and carpool chat are available in the app.</p></AppActions></div>}</ResourceState>;
+  const [joining, setJoining] = useState(false);
+  return <ResourceState resource={resource}>{(ride) => <div className="web-carpool web-event-page"><p className="web-eyebrow">Go together</p><h1>A shared ride.<br />A shared purpose.</h1><ActionBar><button className="web-button" onClick={() => setJoining(true)}>Join carpool</button></ActionBar><div className="web-route-card"><p><span>From</span>{ride.origin}</p><div aria-hidden="true">↓</div><p><span>To</span>{ride.destination ?? 'See destination in GatherGo'}</p><p><span>Departure</span>{ride.departureTime}</p><p>{ride.availableSeats} seats available</p>{ride.event && <a href={`/event/${ride.event.id}`}>{ride.event.title} →</a>}</div>{joining && <Sheet title="Join this carpool" onClose={() => setJoining(false)}><AppActions path={`/carpool/${ride.id}`} config={config} title="Go together with GatherGo"><p>Ride requests, driver details and carpool chat are available in the app.</p></AppActions></Sheet>}</div>}</ResourceState>;
 }
 
 export default function PublicApp() {
   const route = parsePublicRoute(window.location.pathname);
   const config = useResource('/public/config');
-  return <WebSessionProvider><div className="web-app"><header className="web-header"><a href="/" className="web-wordmark">GatherGo<span>Events that bring us together.</span></a><a className="web-header-link" href="https://uat.gathergo.events" target="_blank" rel="noopener noreferrer">Try GatherGo ↗</a></header><main>
+  return <WebSessionProvider><div className="web-app"><header className="web-header"><a href="/" className="web-wordmark"><img src="/ggologo.png" alt="GatherGo" width="110" height="50" /><span>impact starts here</span></a><a className="web-header-link" href="https://uat.gathergo.events" target="_blank" rel="noopener noreferrer">Try GatherGo ↗</a></header><main>
     {route?.kind === 's' ? <SharedLink code={route.id} /> : route?.kind === 'checkout' ? <ReceiptPage id={route.id} config={config.data} /> : route?.kind === 'carpool' ? <CarpoolPage id={route.id} config={config.data} /> : route ? <EventPage id={route.id} mode={route.mode} config={config.data} /> : <div className="web-state"><h1>This page isn’t available</h1><a href="/">Visit GatherGo home</a></div>}
     {config.error && <p className="web-config-error" role="status">App download information is temporarily unavailable. <button className="web-text-button" onClick={config.refresh}>Retry</button></p>}
     </main><footer className="web-footer"><a href="/">GatherGo</a><p>Good things happen when we gather.</p></footer></div></WebSessionProvider>;

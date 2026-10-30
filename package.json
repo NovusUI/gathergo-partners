@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "test": "node --test src/public/*.test.js",
     "build": "vite build && node scripts/write-app-links.mjs",
     "preview": "vite preview"
   },

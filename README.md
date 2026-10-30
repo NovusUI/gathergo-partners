@@ -4,7 +4,14 @@ The homepage introduces GatherGo and its partnerships. Shared links open public
 event (`/event/:id`), Live (`/event/:id/live`), meal collection (`/food-bank/:id`),
 carpool (`/carpool/:id`), short-link (`/s/:code`) and receipt (`/checkout/:id`) pages.
 
-Run `npm run dev` or `npm run build`. Copy `.env.example` to `.env.local` when
+Public event pages show participation buttons beside a short event summary. On
+mobile, these actions stay pinned above the bottom safe area. Event details and
+app-only meal, Live and carpool participation open in accessible modal dialogs;
+web tickets, registration, donation and volunteer forms retain their email gate.
+After server-confirmed checkout, passes and the next app action open in a success
+modal. Users can close it and reopen it from their receipt without another payment.
+
+Run `npm run dev`, `npm test` or `npm run build`. Copy `.env.example` to `.env.local` when
 configuration is needed. Development proxies `/api/v1` to localhost:4000;
 `GATHERGO_API_PROXY_TARGET` overrides that target. `VITE_API_BASE_URL` selects a
 different API origin, including `/api/v1`.
@@ -14,6 +21,13 @@ completion requires a real email code, then uses a scoped web session stored in
 the browser's session storage. Returning from payment or opening a receipt in
 another browser can require verifying the same email again. Session expiry and
 failed API calls are shown explicitly; there is no mock checkout or persistence.
+
+Paid checkout loads Paystack InlineJS v2 and resumes the server-created transaction
+using its access code. The secure hosted payment page is also available. Popup
+completion refreshes the receipt; only the backend's Paystack verification can
+confirm payment and issue passes. No Paystack secret or public key is needed in
+the website for event checkout. Configure `PAYSTACK_SECRET_KEY` and
+`PUBLIC_WEB_ORIGIN` on the backend, with the existing Paystack webhook enabled.
 
 Tickets, registrations, donations and volunteer applications use existing backend
 services. Web food-bank donations issue receipts without meal passes. Meal claims,
